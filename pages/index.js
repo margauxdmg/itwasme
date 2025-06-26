@@ -3,12 +3,13 @@ import { useState } from "react";
 export default function Home() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState("");
-  const [mode, setMode] = useState("human");
+  const [mode, setMode] = useState("gigi");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleRephrase = async () => {
     if (!input.trim()) return;
+
     setLoading(true);
     setResult("");
     setCopied(false);
@@ -22,6 +23,14 @@ export default function Home() {
     const data = await res.json();
     setResult(data.result);
     setLoading(false);
+  };
+
+  const handleRemoveAIPattern = () => {
+    const step1 = input.replace(/\s*[-—]\s*/g, ", ");
+    const step2 = step1.replace(/([.?!]\s+)([a-z])/g, (_, sep, char) => sep + char.toUpperCase());
+    const step3 = step2.charAt(0).toUpperCase() + step2.slice(1);
+    setResult(step3);
+    setCopied(false);
   };
 
   const handleCopy = async () => {
@@ -38,7 +47,7 @@ export default function Home() {
         🧠 <span style={{ color: "#AA336A" }}>ItWasMe</span>
       </h1>
       <p style={{ fontStyle: "italic", marginBottom: "2rem", fontSize: "1.1rem" }}>
-        Paste your chaotic message. Pick a vibe. Click for ✨magic.
+        Paste your chaotic message. Then choose your fix.
       </p>
 
       <textarea
@@ -57,41 +66,58 @@ export default function Home() {
         }}
       />
 
-      <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginBottom: "1rem" }}>
-        <select
-          value={mode}
-          onChange={(e) => setMode(e.target.value)}
-          style={{
-            padding: "0.6rem",
-            borderRadius: "6px",
-            fontSize: "1rem",
-            border: "1px solid #ccc",
-            cursor: "pointer",
-          }}
-        >
-          <option value="gigi">Gigi 🧠 (sassy)</option>
-          <option value="linkedin">LinkedIn 💼</option>
-          <option value="school">School 📝</option>
-          <option value="corporate">Corporate 💻</option>
-          <option value="human">Real Human™ 😬</option>
-        </select>
-
+      <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginBottom: "1rem", flexWrap: "wrap" }}>
         <button
-          onClick={handleSubmit}
-          disabled={loading}
+          onClick={handleRemoveAIPattern}
           style={{
             padding: "0.6rem 1.2rem",
-            background: "#AA336A",
+            background: "#555",
             color: "white",
             fontWeight: "bold",
             borderRadius: "6px",
             border: "none",
             cursor: "pointer",
-            transition: "transform 0.2s",
+            flexGrow: 1,
           }}
         >
-          {loading ? "Humanizing…" : "✨ Humanize it"}
+          🧹 Remove all AI pattern
         </button>
+
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexGrow: 1 }}>
+          <select
+            value={mode}
+            onChange={(e) => setMode(e.target.value)}
+            style={{
+              padding: "0.6rem",
+              borderRadius: "6px",
+              fontSize: "1rem",
+              border: "1px solid #ccc",
+              cursor: "pointer",
+              flexGrow: 1,
+            }}
+          >
+            <option value="gigi">Gigi 🧠 (sassy)</option>
+            <option value="linkedin">LinkedIn 💼</option>
+            <option value="school">School 📝</option>
+            <option value="corporate">Corporate 💻</option>
+            <option value="human">Real Human™ 😬</option>
+          </select>
+          <button
+            onClick={handleRephrase}
+            disabled={loading}
+            style={{
+              padding: "0.6rem 1.2rem",
+              background: "#AA336A",
+              color: "white",
+              fontWeight: "bold",
+              borderRadius: "6px",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            {loading ? "Rephrasing…" : "🎭 Rephrase it"}
+          </button>
+        </div>
       </div>
 
       <div style={{ textAlign: "left", marginTop: "2rem", borderTop: "1px solid #eee", paddingTop: "1rem" }}>
