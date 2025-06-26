@@ -1,0 +1,11 @@
+{
+    "manifest_version": 3,
+    "name": "ItWasMe",
+    "version": "1.0",
+    "description": "Rephrase like a human (or Gigi).",
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "permissions": ["activeTab", "scripting"],
+    "host_permissions": ["<all_urls>"]
+  }

@@ -5,12 +5,13 @@ export default function Home() {
   const [result, setResult] = useState("");
   const [mode, setMode] = useState("human");
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleSubmit = async () => {
     if (!input.trim()) return;
-
     setLoading(true);
     setResult("");
+    setCopied(false);
 
     const res = await fetch("/api/humanize", {
       method: "POST",
@@ -21,6 +22,14 @@ export default function Home() {
     const data = await res.json();
     setResult(data.result);
     setLoading(false);
+  };
+
+  const handleCopy = async () => {
+    if (result) {
+      await navigator.clipboard.writeText(result);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (
@@ -95,10 +104,26 @@ export default function Home() {
             borderRadius: "6px",
             whiteSpace: "pre-wrap",
             fontSize: "1rem",
+            marginBottom: "0.5rem",
           }}
         >
           {result || "Nothing yet... try pasting a message above!"}
         </div>
+        {result && (
+          <button
+            onClick={handleCopy}
+            style={{
+              padding: "0.4rem 1rem",
+              fontSize: "0.9rem",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+              background: copied ? "#d4edda" : "#f0f0f0",
+              cursor: "pointer",
+            }}
+          >
+            {copied ? "Copied!" : "Copy"}
+          </button>
+        )}
       </div>
     </div>
   );
