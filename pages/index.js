@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Userback from "@userback/widget";
 
 export default function Home() {
   const [input, setInput] = useState("");
@@ -8,12 +7,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    const initUserback = async () => {
-      await Userback("A-Qfy1lzGmoDrw3qDf0KLZg2gYE");
-    };
-    initUserback();
-  }, []);
 
   const handleRephrase = async () => {
     if (!input.trim()) return;
