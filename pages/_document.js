@@ -6,12 +6,14 @@ export default function Document() {
       <Head>
         <script dangerouslySetInnerHTML={{
           __html: `
-            (function(w,d,s,u){
-              w.Userback = function(c){w.UserbackQ = w.UserbackQ || [];w.UserbackQ.push(c);};
-              var h=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src=u;
-              h.parentNode.insertBefore(j,h);
-            })(window,document,'script','https://static.userback.io/widget/v1.js');
-            Userback('init', 'A-Qfy1lzGmoDrw3qDf0KLZg2gYE');
+            window.Userback = window.Userback || {};
+            Userback.access_token = "A-Qfy1lzGmoDrw3qDf0KLZg2gYE";
+            (function(d) {
+              var s = d.createElement('script');
+              s.async = true;
+              s.src = 'https://static.userback.io/widget/v1.js';
+              (d.head || d.body).appendChild(s);
+            })(document);
           `
         }} />
       </Head>
